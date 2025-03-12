@@ -1,0 +1,7 @@
+Data Retention Policy
+3.1: All customer data shall be encrypted at rest.
+3.2: Records must be maintained for a period of 7 years from creation.
+
+Training Policy
+4.1: New employees receive security awareness training during onboarding.
+4.2: Refresher training is provided to staff as needed.
