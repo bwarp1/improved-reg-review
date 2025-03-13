@@ -1,0 +1,4 @@
+# Ignore all cached regulation content
+*
+# Except this file
+!.gitignore

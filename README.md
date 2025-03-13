@@ -1,68 +1,38 @@
-# AI-Driven Regulatory Compliance Analysis PoC
+# Regulatory Compliance Analysis Tool
 
-This proof-of-concept (PoC) tool automatically extracts regulatory requirements from Regulations.gov and compares them against internal policy documents to identify compliance gaps.
-
-## Features
-
-- Automatically fetches regulatory documents from Regulations.gov API
-- Extracts regulatory obligations using NLP techniques
-- Compares regulatory requirements against internal policies
-- Generates structured compliance gap analysis reports
+This tool automatically extracts regulatory requirements from Regulations.gov 
+and compares them against your organization's internal policy documents to 
+identify compliance gaps.
 
 ## Installation
 
-1. Clone this repository
-2. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-3. Configure your API key in `compliance_poc/config/config.yaml`
-4. Run the application:
-   ```
-   python run.py --regulation "data privacy" --policy-dir "./policies"
-   ```
+```bash
+pip install -r requirements.txt
+```
 
 ## Configuration
 
-Update `compliance_poc/config/config.yaml` with your API key and other settings:
-
-```yaml
-api:
-  key: "YOUR_API_KEY_HERE"
-  base_url: "https://api.regulations.gov/v4"
-  rate_limit: 1000  # requests per hour
-
-nlp:
-  model: "en_core_web_sm"
-  obligation_keywords: ["must", "shall", "required", "requirement", "mandate", "obligation"]
-  threshold: 0.75  # similarity threshold for matching
-```
+1. Get an API key from api.data.gov
+2. Update `compliance_poc/config/config.yaml` with your API key
+3. Organize your policy documents in the `company_policies` directory
 
 ## Usage
 
+### Command Line
+
 ```bash
-# Run the complete pipeline
-python run.py --regulation "privacy" --policy-dir "./policies"
-
-# Specify output format
-python run.py --regulation "2023-12345" --policy-dir "./policies" --output-format html
-
-# Use a specific docket ID
-python run.py --docket-id "EPA-HQ-OAR-2021-0317" --policy-dir "./policies"
+python run.py --docket EPA-HQ-OAR-2021-0257 --policy-dir ./company_policies
 ```
 
-## Project Structure
+### Web Interface
 
-- `compliance_poc/`: Main package directory
-  - `config/`: Configuration files
-  - `src/`: Source code
-    - `api/`: Regulations.gov API integration
-    - `nlp/`: Natural language processing for obligation extraction
-    - `policy/`: Internal policy document handling
-    - `matching/`: Comparison and gap analysis
-    - `reporting/`: Report generation
-  - `tests/`: Unit and integration tests
+```bash
+streamlit run app.py
+```
 
-## License
+## Output
 
-MIT
+The tool generates reports in multiple formats:
+- CSV for spreadsheet analysis
+- HTML for interactive viewing
+- JSON for integration with other systems

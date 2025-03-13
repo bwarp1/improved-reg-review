@@ -28,7 +28,7 @@ pyyaml>=6.0
 pytest>=7.3.1
 
 # Optional visualization/UI (uncomment if needed)
-# streamlit>=1.21.0
+streamlit>=1.21.0
 
 # Install all requirements
 pip install -r requirements.txt

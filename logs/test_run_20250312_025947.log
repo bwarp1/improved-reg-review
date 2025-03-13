@@ -1,0 +1,26 @@
+2025-03-12 02:59:47,787 - WARNING - No API key found in environment. Running in demo mode.
+2025-03-12 02:59:47,787 - INFO - To use real regulations, set the REGULATIONS_API_KEY environment variable.
+2025-03-12 02:59:47,787 - INFO - Processing regulation: Docket=EPA-HQ-OAR-2021-0257, Doc ID=None
+2025-03-12 02:59:47,790 - INFO - Processing regulation: Docket ID=EPA-HQ-OAR-2021-0257, Document ID=None
+2025-03-12 02:59:47,790 - INFO - RegulationsAPI initialized, use_demo_data=False, API key=provided
+2025-03-12 02:59:47,790 - INFO - Searching for documents in docket: EPA-HQ-OAR-2021-0257
+2025-03-12 02:59:47,790 - INFO - Searching for documents in docket: EPA-HQ-OAR-2021-0257
+2025-03-12 02:59:48,323 - INFO - Found 10 documents for docket EPA-HQ-OAR-2021-0257
+2025-03-12 02:59:48,323 - INFO - Using document: EPA-HQ-OAR-2021-0257-0455
+2025-03-12 02:59:48,324 - INFO - Fetching document metadata: EPA-HQ-OAR-2021-0257-0455
+2025-03-12 02:59:48,760 - WARNING - No content found in document
+2025-03-12 02:59:48,760 - ERROR - Failed to retrieve regulation text
+2025-03-12 02:59:48,760 - INFO - Extracting obligations from regulation text
+2025-03-12 02:59:49,612 - INFO - Loaded spaCy model: en_core_web_sm
+2025-03-12 02:59:49,613 - INFO - Extracting obligations from text (0 chars)
+2025-03-12 02:59:49,613 - INFO - Found 0 obligations
+2025-03-12 02:59:49,613 - INFO - Found 0 obligations
+2025-03-12 02:59:49,613 - INFO - Loading policies from directory: sample_data/policies
+2025-03-12 02:59:49,664 - INFO - Loading policies from sample_data/policies
+2025-03-12 02:59:49,665 - INFO - Loaded 2 policy documents
+2025-03-12 02:59:49,665 - INFO - Loaded 2 policy documents
+2025-03-12 02:59:49,665 - INFO - Comparing obligations against policies
+2025-03-12 02:59:49,665 - WARNING - No obligations provided for comparison
+2025-03-12 02:59:49,665 - INFO - Generating compliance report
+2025-03-12 02:59:49,666 - INFO - Console report generated
+2025-03-12 02:59:49,668 - INFO - Analysis complete. Found 0 obligations.
