@@ -80,6 +80,32 @@ Process multiple regulations against your policies:
 python batch_run.py --config batch_config.yaml
 ```
 
+## Scheduled Checks
+
+The system supports automated regulatory compliance checks that can run on a schedule, allowing you to monitor your compliance status without manual intervention.
+
+### Setting Up Scheduled Checks
+
+Add this to your crontab or scheduler to run automatically:
+
+```bash
+# Run daily at 6 AM
+0 6 * * * cd /path/to/project && python scheduled_check.py
+```
+
+### Additional Configuration
+
+To customize the schedule:
+- Edit the crontab entry using `crontab -e`
+- Modify the schedule parameters (minute, hour, day of month, month, day of week)
+- For example, to run weekly on Mondays at 8 AM: `0 8 * * 1`
+
+### Viewing Results
+
+Scheduled check results are stored in the `/logs` directory with timestamps. You can:
+- Check the latest results using `cat /logs/latest_check.log`
+- Set up email notifications by modifying the `config.yaml` file
+
 ## Troubleshooting
 
 ### Common Issues
