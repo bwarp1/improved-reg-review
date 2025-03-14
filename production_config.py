@@ -19,7 +19,7 @@ def setup_config():
     args = parser.parse_args()
     
     # Find the config file
-    config_path = Path("compliance_poc/config/config.yaml")
+    config_path = Path("config.yaml")
     if not config_path.exists():
         print(f"Error: Config file not found at {config_path}")
         return 1
