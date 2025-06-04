@@ -1,0 +1,428 @@
+/* Dashboard enhancements */
+
+/* Search highlight styling */
+.search-highlight {
+    background-color: #fff3cd;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+
+/* Tag filter styling */
+.tag-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #f8f9fc;
+    color: #6e707e;
+}
+
+.tag-item:hover {
+    background-color: #eaecf4;
+}
+
+.selected-tag {
+    background-color: #4e73df;
+    color: white;
+}
+
+/* Chart card enhancements */
+.chart-card {
+    position: relative;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 0.35rem;
+    overflow: hidden;
+}
+
+.chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.chart-card .card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-header-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.chart-header-actions button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+}
+
+/* Interactive elements */
+.interactive-element {
+    cursor: pointer;
+}
+
+/* Filter badges */
+.filter-badge {
+    position: relative;
+    padding: 0.4em 0.8em 0.4em 0.6em;
+    border-radius: 12px;
+    background-color: #4e73df;
+    color: white;
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filter-badge i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.filter-badge:hover {
+    background-color: #2e59d9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filter-badge .close {
+    margin-left: 6px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.filter-badge .close:hover {
+    opacity: 1;
+}
+
+/* Active filters container */
+#activeFilters {
+    margin-bottom: 1rem;
+}
+
+/* Advanced visualizations */
+.donut-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.donut-inner h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.donut-inner p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #858796;
+}
+
+/* Forecast chart container */
+.forecast-container {
+    position: relative;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+}
+
+.forecast-container .info-tooltip {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+/* Enhanced chart containers */
+.chart-area {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chart-card {
+        margin-bottom: 1.5rem;
+        height: 350px;
+    }
+    
+    .filter-container {
+        padding: 0.75rem;
+    }
+    
+    .active-filters-container {
+        flex-wrap: wrap;
+    }
+}
+
+/* Impact timeline controls */
+.timeline-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+/* Chart toggle buttons */
+.chart-toggle-btn {
+    margin: 0 3px;
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    border-radius: 0.2rem;
+    transition: all 0.15s;
+}
+
+.chart-toggle-btn.active {
+    background-color: #4e73df;
+    color: white;
+}
+
+/* Improve table styling */
+.regulations-table th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fc;
+    z-index: 10;
+}
+
+.regulations-table tbody tr:hover {
+    background-color: #f8f9fc;
+    cursor: pointer;
+}
+
+/* Compliance indicator pills */
+.compliance-pill {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.compliance-pill.compliant {
+    background-color: #1cc88a;
+}
+
+.compliance-pill.non-compliant {
+    background-color: #e74a3b;
+}
+
+.compliance-pill.in-progress {
+    background-color: #f6c23e;
+}
+
+.compliance-pill.not-reviewed {
+    background-color: #858796;
+}
+
+/* Department filter styling */
+.department-filter-container {
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f8f9fc;
+    margin-bottom: 20px;
+}
+
+.department-filter-container select {
+    width: 100%;
+}
+
+/* Compliance gap chart styling */
+.gap-chart-container {
+    position: relative;
+    min-height: 350px;
+}
+
+.gap-severity-badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.35rem;
+    margin-right: 5px;
+}
+
+.gap-high {
+    color: #fff;
+    background-color: #e74a3b;
+}
+
+.gap-medium {
+    color: #fff;
+    background-color: #f6c23e;
+}
+
+.gap-low {
+    color: #fff;
+    background-color: #1cc88a;
+}
+
+/* Advanced filters styling */
+.advanced-filters-section {
+    margin-bottom: 1rem;
+}
+
+.advanced-filters-section .card-header {
+    cursor: pointer;
+}
+
+.filter-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Gap summary cards */
+.gap-summary-card {
+    padding: 1rem;
+    border-radius: 0.35rem;
+    border-left: 0.25rem solid;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.gap-summary-card.high {
+    border-left-color: #e74a3b;
+    background-color: rgba(231, 74, 59, 0.05);
+}
+
+.gap-summary-card.medium {
+    border-left-color: #f6c23e;
+    background-color: rgba(246, 194, 62, 0.05);
+}
+
+.gap-summary-card.low {
+    border-left-color: #1cc88a;
+    background-color: rgba(28, 200, 138, 0.05);
+}
+
+/* Enhanced select2 dropdown styling */
+.select2-container--default .select2-selection--multiple {
+    border-color: #d1d3e2;
+    border-radius: 0.35rem;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    padding: 2px 6px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: rgba(255, 255, 255, 0.7);
+    margin-right: 4px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: white;
+}
+
+/* Responsive adjustments for filters */
+@media (max-width: 768px) {
+    .filter-controls {
+        flex-direction: column;
+    }
+    
+    .filter-control {
+        margin-bottom: 0.5rem;
+    }
+    
+    .gap-chart-container {
+        min-height: 300px;
+    }
+}
+
+/* Gap Analysis Styling */
+.gap-analysis-container {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    margin-bottom: 1rem;
+}
+
+.gap-chart-header {
+    font-size: 1.1rem;
+    color: #4e73df;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e3e6f0;
+    padding-bottom: 0.5rem;
+}
+
+.gap-severity-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.severity-high {
+    background-color: #ffebee;
+    color: #b71c1c;
+    border: 1px solid #ef5350;
+}
+
+.severity-medium {
+    background-color: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ff9800;
+}
+
+.severity-low {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    border: 1px solid #4caf50;
+}
+
+/* Filter Controls */
+.filter-section {
+    background-color: #f8f9fc;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4e73df;
+    margin-bottom: 0.5rem;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #6e707e;
+    background-color: #fff;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.filter-select:focus {
+    border-color: #4e73df;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}

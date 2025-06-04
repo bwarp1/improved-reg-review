@@ -1,0 +1,135 @@
+<!-- Add new visualization containers -->
+
+<div class="row">
+    <!-- Impact Timeline -->
+    <div class="col-xl-8 col-lg-7 mb-4">
+        <div class="card shadow h-100 chart-card">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Regulatory Impact Timeline</h6>
+                <div class="chart-header-actions">
+                    <button class="btn btn-sm btn-outline-primary chart-toggle-btn active" data-type="area">
+                        <i class="fas fa-chart-area"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary chart-toggle-btn" data-type="bar">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="impactTimeline"></canvas>
+                </div>
+                <div class="timeline-controls mt-2">
+                    <span class="small text-muted">Drag to pan, scroll to zoom</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Compliance Forecast -->
+    <div class="col-xl-4 col-lg-5 mb-4">
+        <div class="card shadow h-100 chart-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Compliance Forecast</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="complianceForecast"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Active Filters Container -->
+<div id="activeFiltersContainer" class="card mb-4" style="display:none;">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Active Filters</h6>
+    </div>
+    <div class="card-body">
+        <div id="activeFilters" class="d-flex flex-wrap"></div>
+    </div>
+</div>
+
+<!-- New: Compliance Gap Analysis Section -->
+<div class="row">
+    <!-- Gap by Department -->
+    <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="card shadow h-100 chart-card">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Compliance Gaps by Department</h6>
+                <div class="chart-header-actions">
+                    <button class="btn btn-sm btn-outline-primary chart-toggle-btn active" data-type="bar">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary chart-toggle-btn" data-type="pie">
+                        <i class="fas fa-chart-pie"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="departmentGapsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gap Severity -->
+    <div class="col-xl-6 col-lg-6 mb-4">
+        <div class="card shadow h-100 chart-card">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Gap Severity Distribution</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="severityGapsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New: Department Filter Controls -->
+<div class="card mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Advanced Filters</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="departmentFilter"><strong>Filter by Department:</strong></label>
+                <select class="form-control enhanced-select" id="departmentFilter" multiple>
+                    <option value="all" selected>All Departments</option>
+                    <option value="legal">Legal</option>
+                    <option value="compliance">Compliance</option>
+                    <option value="operations">Operations</option>
+                    <option value="it">IT</option>
+                    <option value="finance">Finance</option>
+                    <option value="hr">HR</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="regulationTypeFilter"><strong>Filter by Regulation Type:</strong></label>
+                <select class="form-control enhanced-select" id="regulationTypeFilter" multiple>
+                    <option value="all" selected>All Types</option>
+                    <option value="environmental">Environmental</option>
+                    <option value="financial">Financial</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="data-privacy">Data Privacy</option>
+                    <option value="safety">Safety</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 text-right">
+                <button class="btn btn-primary" id="applyFilters">
+                    <i class="fas fa-filter mr-1"></i> Apply Filters
+                </button>
+                <button class="btn btn-outline-secondary ml-2" id="clearFilters">
+                    <i class="fas fa-times mr-1"></i> Clear Filters
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

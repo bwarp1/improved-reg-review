@@ -1,0 +1,75 @@
+# Production Environment Configuration
+# Overrides base.yaml settings for production environment
+
+app:
+  env: "production"
+
+api:
+  use_demo_data: false
+  # key should be set via REGULATIONS_API_KEY environment variable
+  rate_limit: 5000  # Increased for production load
+
+paths:
+  data_dir: "/data"
+  policy_dir: "/data/policies"
+  regulations_dir: "/data/regulations"
+  output_dir: "/data/output"
+  logs_dir: "/var/log/compliance-poc"
+
+# Enhanced NLP settings for production
+nlp:
+  model: "en_core_web_lg"  # Use larger model for better accuracy
+  batch_size: 1000
+  max_length: 2000000
+
+# Stricter matching for production
+matching:
+  threshold_fuzzy: 85
+  threshold_similarity: 0.7
+  approach: "hybrid"
+  adaptive_learning: true
+  confidence_threshold: 0.8
+  cache_size: 10000
+
+# Production logging
+logging:
+  level: "INFO"
+  file: "/var/log/compliance-poc/compliance.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(process)d - %(message)s"
+  max_size: 100000000  # 100MB
+  backup_count: 10
+  console: false
+
+# Email notifications for production
+email:
+  enabled: true
+  smtp_server: "__SMTP_SERVER__"  # Set via environment variable
+  smtp_port: 587
+  use_tls: true
+  # credentials should be set via environment variables
+  from_address: "compliance-notifications@company.com"
+
+# Production scheduler settings
+scheduler:
+  enabled: true
+  check_time: "01:00"
+  days_lookback: 7
+  retry_attempts: 3
+  retry_delay: 300  # 5 minutes
+  tasks:
+    - name: "daily_compliance_check"
+      schedule: "0 1 * * *"
+      handler: "compliance_poc.src.scheduler.daily_check"
+      timeout: 3600  # 1 hour
+    - name: "weekly_report"
+      schedule: "0 2 * * 0"  # 2 AM on Sundays
+      handler: "compliance_poc.src.scheduler.weekly_report"
+      timeout: 7200  # 2 hours
+
+# Performance tuning
+performance:
+  max_workers: 4
+  chunk_size: 5000
+  cache_ttl: 3600
+  db_pool_size: 10
+  db_max_overflow: 20

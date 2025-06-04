@@ -1,0 +1,76 @@
+# Base Configuration for Regulatory Compliance Analysis Tool
+
+app:
+  name: "Regulatory Compliance Analysis Tool"
+  env: "development"  # Override in environment configs
+
+# Core settings
+api:
+  base_url: "https://api.regulations.gov/v4"
+  rate_limit: 1000
+  user_agent: "CompliancePoCAgent/1.0"
+  use_demo_data: false  # Set to true to use demo data regardless of API key
+
+paths:
+  data_dir: "compliance_poc/data"
+  policy_dir: "compliance_poc/sample_data/policies"
+  regulations_dir: "compliance_poc/data/regulations"
+  output_dir: "compliance_poc/data/output"
+  logs_dir: "compliance_poc/logs"
+
+# NLP Configuration
+nlp:
+  model: "en_core_web_sm"
+  obligation_keywords:
+    - "must"
+    - "shall"
+    - "required"
+    - "requires"
+    - "requirement"
+    - "mandate"
+    - "mandates"
+    - "necessary"
+    - "obligation"
+    - "mandatory"
+    - "should"
+    - "needs to"
+    - "obligated to"
+
+# Matching Configuration  
+matching:
+  threshold_fuzzy: 80
+  threshold_similarity: 0.6
+  approach: "hybrid"
+  adaptive_learning: true
+  confidence_threshold: 0.7
+
+# Output Configuration
+output:
+  format: "console"
+  detail_level: "medium"
+  output_dir: "compliance_poc/reports"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  file: "compliance_poc/logs/compliance.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  console: true
+
+# Service Integration
+email:
+  enabled: false
+  smtp_server: "smtp.example.com"
+  smtp_port: 587
+  use_tls: true
+  from_address: "notifications@yourcompany.com"
+
+# Task Scheduling
+scheduler:
+  enabled: true
+  check_time: "01:00"
+  days_lookback: 1
+  tasks:
+    - name: "daily_compliance_check"
+      schedule: "0 1 * * *"
+      handler: "compliance_poc.src.scheduler.daily_check"

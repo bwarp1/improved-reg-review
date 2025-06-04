@@ -1,0 +1,25 @@
+# Development Environment Configuration
+# Overrides base.yaml settings for development environment
+
+app:
+  env: "development"
+
+api:
+  use_demo_data: true
+  key: "DEMO_KEY"
+
+paths:
+  data_dir: "compliance_poc/data/dev"
+  policy_dir: "sample_data/policies"
+  output_dir: "compliance_poc/data/dev/output"
+  logs_dir: "compliance_poc/logs/dev"
+
+logging:
+  level: "DEBUG"
+  file: "compliance_poc/logs/dev/compliance.log"
+
+email:
+  enabled: false
+
+scheduler:
+  enabled: false
