@@ -2,65 +2,67 @@
 
 import os
 import logging
-from typing import Optional, Tuple
 from pathlib import Path
+from typing import Tuple, Optional
 
-from compliance_poc.src.utils.config_manager import ConfigManager, EnvironmentConfig
+from compliance_poc.src.utils.config_manager import ConfigManager # EnvConfig not directly used here
 from compliance_poc.src.utils.database import DatabaseManager
 from compliance_poc.src.optimization.threshold_optimizer import ThresholdOptimizer
 
-def initialize_system(environment: str = "development") -> Tuple[EnvironmentConfig, DatabaseManager, ThresholdOptimizer]:
+# Note: EnvConfig was removed from the import as it's not directly used as a type hint
+# in this file's functions anymore. It's defined in config_manager.py.
+
+def initialize_system(cm: ConfigManager) -> Tuple[DatabaseManager, ThresholdOptimizer]:
     """
-    Initialize the compliance system with appropriate configuration and components.
+    Initialize the compliance system using the provided ConfigManager.
     
     Args:
-        environment: Name of the environment to load (e.g., "development", "production")
+        cm: An instance of ConfigManager that has already loaded configuration.
         
     Returns:
-        Tuple of (config, database_manager, threshold_optimizer)
+        Tuple of (DatabaseManager, ThresholdOptimizer)
         
     Raises:
         RuntimeError: If initialization fails
     """
+    logger = logging.getLogger("compliance-system")
     try:
-        # Setup logging
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        logger = logging.getLogger("compliance-system")
+        # Assuming main.py's setup_logging has already run logging.basicConfig().
+        # Set the level for the root logger based on config.
+        log_level_str = cm.get("logging.level", "INFO").upper()
+        root_logger = logging.getLogger() # Get the root logger
+        if hasattr(logging, log_level_str):
+            root_logger.setLevel(getattr(logging, log_level_str))
+            # This log might be suppressed if root_logger's level is higher than logger's level
+            logger.info(f"Root logger level set to: {log_level_str} by initialize_system.")
+        else:
+            logger.warning(f"Invalid log level '{log_level_str}' in config. Root logger level unchanged by initialize_system.")
         
-        # Load configuration
-        logger.info(f"Initializing compliance system for environment: {environment}")
-        config_manager = ConfigManager()
-        config = config_manager.load_environment(environment)
-        
-        # Set log level from config
-        logging.getLogger().setLevel(config.log_level)
+        logger.info(f"Initializing system components using ConfigManager for env: {cm.get('app.env', 'unknown')}")
         
         # Initialize database
-        logger.info("Initializing database connection")
-        database_url = os.environ.get("DATABASE_URL", config.database_url)
-        db_manager = DatabaseManager(database_url)
+        logger.info("Initializing database connection...")
+        database_url = os.environ.get("DATABASE_URL") or cm.get("database.url")
+        # DatabaseManager has a default connection string if database_url is None
+        db_manager = DatabaseManager(database_url) if database_url else DatabaseManager()
+        logger.info("DatabaseManager initialized.")
         
-        # Initialize optimizer with config and database
-        logger.info("Initializing threshold optimizer")
+        # Initialize threshold optimizer with configuration and database
+        logger.info("Initializing threshold optimizer...")
+        # ThresholdOptimizer expects a config dictionary. cm.config is this dictionary.
         optimizer = ThresholdOptimizer(
-            config=config.__dict__,  # Convert dataclass to dict
+            config=cm.config, 
             db_manager=db_manager
         )
+        logger.info("ThresholdOptimizer initialized.")
         
-        # Create required directories
-        Path(config.cache_dir).mkdir(parents=True, exist_ok=True)
-        if hasattr(config.reporting, "output_dir"):
-            Path(config.reporting["output_dir"]).mkdir(parents=True, exist_ok=True)
+        # Directory creation for cache and output are handled by their respective components or main setup.
         
-        logger.info("System initialization completed successfully")
-        return config, db_manager, optimizer
-        
+        logger.info("System components initialization completed successfully.")
+        return db_manager, optimizer
     except Exception as e:
-        logger.error(f"Failed to initialize system: {e}")
-        raise RuntimeError(f"System initialization failed: {str(e)}") from e
+        logger.exception("Failed to initialize system components in initialize_system")
+        raise RuntimeError("System components initialization failed in initialize_system") from e
 
 def cleanup_system(db_manager: Optional[DatabaseManager] = None) -> None:
     """
@@ -84,14 +86,14 @@ def cleanup_system(db_manager: Optional[DatabaseManager] = None) -> None:
         logger.error(f"Error during system cleanup: {e}")
         raise RuntimeError(f"System cleanup failed: {str(e)}") from e
 
-def get_system_status(config: EnvironmentConfig, 
+def get_system_status(cm: ConfigManager, 
                      db_manager: DatabaseManager,
                      optimizer: ThresholdOptimizer) -> dict:
     """
     Get current status of the compliance system.
     
     Args:
-        config: Current environment configuration
+        cm: ConfigManager instance with loaded configuration.
         db_manager: Database manager instance
         optimizer: Threshold optimizer instance
         
@@ -104,28 +106,37 @@ def get_system_status(config: EnvironmentConfig,
         # Check database connection
         db_status = "ok"
         try:
-            db_manager.Session()
+            # Attempt to create a session to check connectivity
+            session = db_manager.Session()
+            session.close()
         except Exception as e:
             db_status = f"error: {str(e)}"
+            logger.warning(f"Database connection check failed: {e}")
             
         # Get optimization metrics
         optimization_metrics = optimizer.get_performance_metrics()
         
-        # Check cache directory
+        # Check cache directory status
+        # The CACHE_DIR is defined in main.py as Path("cache").
+        # We'll use that fixed path for status checking here.
+        # Alternatively, a dedicated config key for cache_dir could be used if it exists.
+        cache_dir_path_str = cm.get("paths.cache_dir", "cache") # Default to "cache"
+        cache_dir = Path(cache_dir_path_str)
         cache_status = "ok"
-        cache_dir = Path(config.cache_dir)
         if not cache_dir.exists():
-            cache_status = "directory missing"
+            cache_status = f"directory missing ({cache_dir})"
         elif not os.access(cache_dir, os.W_OK):
-            cache_status = "not writable"
+            cache_status = f"not writable ({cache_dir})"
             
+        db_url_display = (cm.get("database.url") or "default_sqlite").split("@")[-1]
+
         return {
-            "environment": config.name,
-            "log_level": config.log_level,
-            "demo_mode": config.use_demo_data,
+            "environment": cm.get("app.env", "unknown"),
+            "log_level": cm.get("logging.level", "UNKNOWN"),
+            "demo_mode": cm.get("api.use_demo_data", False),
             "database": {
                 "status": db_status,
-                "url": config.database_url.split("@")[-1]  # Hide credentials
+                "url_suffix": db_url_display
             },
             "cache": {
                 "status": cache_status,

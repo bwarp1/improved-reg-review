@@ -5,7 +5,7 @@ import logging
 import argparse
 import sys
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, TypedDict # Added TypedDict
 from dataclasses import dataclass
 
 from compliance_poc.src.utils.config_manager import ConfigManager
@@ -35,6 +35,35 @@ class ProcessingContext:
     policy_loader: PolicyLoader
     comparer: ComplianceComparer
     report_generator: Optional[ReportGenerator] = None
+
+# Define the path for the processed dockets tracking file within the cache directory
+CACHE_DIR = Path("cache")
+PROCESSED_DOCKETS_FILE = CACHE_DIR / "processed_dockets.txt"
+
+def get_docket_ids_from_policy_dir(policy_dir_path: Path) -> List[str]:
+    """Scan the policy directory for subdirectories, treating each as a docket ID."""
+    if not policy_dir_path.is_dir():
+        return []
+    return [d.name for d in policy_dir_path.iterdir() if d.is_dir()]
+
+def load_processed_dockets() -> set[str]:
+    """Load processed docket IDs from the tracking file."""
+    if not PROCESSED_DOCKETS_FILE.exists():
+        return set()
+    with open(PROCESSED_DOCKETS_FILE, "r") as f:
+        return {line.strip() for line in f if line.strip()}
+
+def mark_docket_as_processed(docket_id: str, logger: logging.Logger) -> None:
+    """Mark_docket_as_processed a docket ID as processed by appending it to the tracking file."""
+    try:
+        # Ensure the cache directory exists
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        with open(PROCESSED_DOCKETS_FILE, "a") as f:
+            f.write(f"{docket_id}\n")
+        logger.info(f"Marked docket {docket_id} as processed. Tracking file: {PROCESSED_DOCKETS_FILE}")
+    except IOError as e:
+        logger.error(f"Error writing to processed dockets file {PROCESSED_DOCKETS_FILE}: {e}")
+
 
 class ComplianceResult(TypedDict):
     """Type definition for compliance analysis results."""
@@ -76,8 +105,10 @@ def parse_arguments() -> argparse.Namespace:
                         help="Environment to use (development/production)")
     parser.add_argument("--docket", help="Regulation docket ID")
     parser.add_argument("--doc-id", help="Specific document ID")
-    parser.add_argument("--policy-dir", default="company_policies",
-                        help="Directory with company policies")
+    parser.add_argument("--policy-dir", default=None, # Changed default to None
+                        help="Directory with company policies. Defaults to value from config file.")
+    parser.add_argument("--force-reprocess", action="store_true", default=False,
+                        help="Force reprocessing of all dockets, ignoring the processed dockets log.")
     return parser.parse_args()
 
 def setup_processing_context(config_manager: ConfigManager, logger: logging.Logger) -> ProcessingContext:
@@ -99,8 +130,9 @@ def setup_processing_context(config_manager: ConfigManager, logger: logging.Logg
         extractor=ObligationExtractor(config=config["nlp"]),
         policy_loader=PolicyLoader(),
         comparer=ComplianceComparer(config["matching"]),
-        report_generator=(ReportGenerator(config["reporting"]) 
-                        if config["reporting"].get("format") != "none" else None)
+        # Use "output" key for reporting configuration as per base.yaml and development.yaml structure
+        report_generator=(ReportGenerator(config["output"]) 
+                        if config.get("output", {}).get("format") != "none" else None)
     )
 
 def fetch_regulation_text(context: ProcessingContext, docket_id: str, 
@@ -187,9 +219,23 @@ def process_regulation(docket_id: str,
         # Compare obligations against policies using optimizer if available
         context.logger.info("Comparing obligations against policies")
         if optimizer:
-            matches = optimizer.optimize_and_compare(obligations, policies)
-        else:
-            matches = context.comparer.compare(obligations, policies)
+            # Ensure the optimizer's thresholds are up to date.
+            # optimize_thresholds might take arguments like min_samples, domains.
+            # Calling it without args will use its defaults.
+            context.logger.info("Optimizing thresholds using the main optimizer instance.")
+            optimizer.optimize_thresholds() 
+            
+            # Propagate the optimized thresholds to the comparer.
+            # ThresholdOptimizer.thresholds is like {"base": {"value": 0.60, "confidence": ...}}
+            # ComplianceComparer.thresholds expects a flat dict like {"base": 0.60}
+            new_thresholds = {domain: data["value"] for domain, data in optimizer.thresholds.items()}
+            context.logger.info(f"Updating comparer thresholds with: {new_thresholds}")
+            context.comparer.thresholds = new_thresholds
+        
+        # Always use the comparer to perform the actual matching.
+        # If optimizer was present, comparer now uses its updated thresholds.
+        # If optimizer was not present, comparer uses its internally initialized thresholds.
+        matches = context.comparer.compare(obligations, policies)
             
         # Store results in database if available
         if db_manager:
@@ -267,42 +313,109 @@ def main() -> None:
         logger.info(f"Starting regulatory compliance analysis in {args.env} environment")
         
         # Initialize system components
-        context = setup_processing_context(config_manager, logger)
-        db_manager, optimizer = initialize_system(config)
+        # The setup_processing_context is called within process_regulation if needed.
+        # ConfigManager is passed to process_regulation, which then handles context setup.
+        # Pass the ConfigManager instance to initialize_system
+        db_manager, optimizer = initialize_system(config_manager)
+
+        # Determine the base policy directory from arguments or configuration.
+        # This base directory is expected to contain subdirectories, each representing a docket.
+        base_policy_dir_path = Path(args.policy_dir if args.policy_dir else config_manager.get("paths.policy_dir", "company_policies"))
+        logger.info(f"Using base policy directory: {base_policy_dir_path}")
+
+        if not base_policy_dir_path.exists() or not base_policy_dir_path.is_dir():
+            logger.error(f"Base policy directory '{base_policy_dir_path}' does not exist or is not a directory. Exiting.")
+            sys.exit(1)
         
-        if not args.docket:
-            # Print system status and exit if no docket specified
-            status = get_system_status(config, db_manager, optimizer)
-            print("\n=== SYSTEM STATUS ===")
-            print(f"Environment: {config_manager.get('app.env')}")
-            print(f"Database: {status['database']['status']}")
-            print(f"Cache: {status['cache']['status']}")
-            print(f"Demo Mode: {'Enabled' if config_manager.get('api.use_demo_data') else 'Disabled'}")
-            print("===================\n")
-            sys.exit(0)
+        if args.docket:
+            # Manual mode: Process a single, specified docket.
+            # The policy_dir for this docket will be base_policy_dir_path / args.docket.
+            logger.info(f"Manual mode: Processing specified docket '{args.docket}'")
+            docket_specific_policy_path = base_policy_dir_path / args.docket
+
+            if not docket_specific_policy_path.is_dir():
+                logger.error(f"Specified docket directory '{docket_specific_policy_path}' not found under base policy directory. Exiting.")
+                sys.exit(1)
+            
+            try:
+                # Note: process_regulation expects policy_dir to be the path to the actual policy files for that docket.
+                results = process_regulation(
+                    docket_id=args.docket,
+                    document_id=args.doc_id,
+                    policy_dir=str(docket_specific_policy_path), 
+                    config_manager=config_manager, # Pass manager to avoid re-init of logger/context
+                    db_manager=db_manager,
+                    optimizer=optimizer
+                )
+                print_compliance_summary(results)
+                mark_docket_as_processed(args.docket, logger) # Mark after successful processing
+                logger.info(f"Successfully processed docket: {args.docket}")
+            except Exception as e:
+                logger.error(f"Error processing docket {args.docket}: {e}", exc_info=True)
+                # In manual mode, an error for the single docket should likely halt.
+                # Depending on requirements, could allow continuing if this was part of a batch.
         
-        # Process regulation
-        logger.info(f"Processing regulation docket: {args.docket}")
-        try:
-            # Update policy directory if specified in args
-            if args.policy_dir:
-                config["paths"]["policy_dir"] = args.policy_dir
+        else:
+            # Automatic mode: Scan base_policy_dir_path for dockets (subdirectories).
+            logger.info(f"Automatic mode: Scanning '{base_policy_dir_path}' for dockets.")
+            detected_docket_ids = get_docket_ids_from_policy_dir(base_policy_dir_path)
+            
+            if not detected_docket_ids:
+                logger.info(f"No dockets (subdirectories) found in '{base_policy_dir_path}'.")
+                # Optionally, print system status here as per original behavior if nothing to do.
+                # Pass the ConfigManager instance to get_system_status
+                status = get_system_status(config_manager, db_manager, optimizer)
+                print("\n=== SYSTEM STATUS (No Dockets Found) ===")
+                print(f"Environment: {config_manager.get('app.env')}")
+                print(f"Database: {status['database']['status']}")
+                print(f"Cache: {status['cache']['status']}")
+                print(f"Demo Mode: {'Enabled' if config_manager.get('api.use_demo_data') else 'Disabled'}")
+                print(f"Policy Directory Searched: {base_policy_dir_path}")
+                print("=======================================\n")
+                sys.exit(0)
+
+            logger.info(f"Found dockets: {', '.join(detected_docket_ids)}")
+            processed_dockets_set = load_processed_dockets()
+            
+            if args.force_reprocess:
+                logger.info("Force reprocessing enabled. All detected dockets will be processed regardless of prior status.")
+
+            processed_count = 0
+            skipped_count = 0
+            error_count = 0
+
+            for docket_id_to_process in detected_docket_ids:
+                if docket_id_to_process in processed_dockets_set and not args.force_reprocess:
+                    logger.info(f"Skipping already processed docket: {docket_id_to_process}")
+                    skipped_count += 1
+                    continue
                 
-            results = process_regulation(
-                docket_id=args.docket,
-                document_id=args.doc_id,
-                policy_dir=config_manager.get("paths.policy_dir"),
-                config=config,
-                db_manager=db_manager,
-                optimizer=optimizer
-            )
-            print_compliance_summary(results)
+                logger.info(f"Processing docket: {docket_id_to_process}")
+                docket_specific_policy_path = base_policy_dir_path / docket_id_to_process
+                try:
+                    results = process_regulation(
+                        docket_id=docket_id_to_process,
+                        document_id=None, # In auto mode, doc_id is not specified per docket.
+                        policy_dir=str(docket_specific_policy_path),
+                        config_manager=config_manager,
+                        db_manager=db_manager,
+                        optimizer=optimizer
+                    )
+                    print_compliance_summary(results)
+                    mark_docket_as_processed(docket_id_to_process, logger)
+                    logger.info(f"Successfully processed docket: {docket_id_to_process}")
+                    processed_count +=1
+                except Exception as e:
+                    logger.error(f"Error processing docket {docket_id_to_process}: {e}", exc_info=True)
+                    error_count +=1
+                    # Continue to the next docket in automatic mode.
             
-        except Exception as e:
-            logger.error(f"Error processing regulation: {e}", exc_info=True)
-            raise
-            
-        logger.info("Compliance analysis completed successfully")
+            logger.info(f"Automatic processing summary: "
+                        f"Processed {processed_count} dockets, "
+                        f"Skipped {skipped_count} dockets, "
+                        f"Errors on {error_count} dockets.")
+
+        logger.info("Compliance analysis run completed.")
         
     except Exception as e:
         logger.error(f"Application error: {e}", exc_info=True)

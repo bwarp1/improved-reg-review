@@ -1,6 +1,7 @@
 """Module for domain-specific language models and terminology."""
 import logging
-from typing import Dict, List, Set, Optional, Tuple
+from typing import Dict, List, Set, Optional, Tuple, Any, Union # Added Any, Union for good measure
+from collections import Counter # Added Counter
 import re
 import json
 from pathlib import Path

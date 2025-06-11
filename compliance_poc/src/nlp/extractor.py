@@ -693,6 +693,119 @@ class ObligationExtractor:
         result["confidence"] = max(0.0, min(1.0, confidence))
         
         return result
+
+    def _extract_subject(self, sent_doc: spacy.tokens.doc.Doc) -> str:
+        """
+        Extract the subject(s) of an obligation from a spaCy sentence.
+        Looks for nsubj (nominal subject) or nsubjpass (passive nominal subject).
+        """
+        subjects = []
+        # Ensure sent_doc is a spaCy Span/Doc object
+        if not hasattr(sent_doc, 'ents'): # Basic check if it's a spaCy object
+            self.logger.warning(f"_extract_subject received non-spaCy object: {type(sent_doc)}")
+            return ""
+
+        for token in sent_doc:
+            if token.dep_ in ("nsubj", "nsubjpass"):
+                # Capture the whole noun phrase for the subject
+                # Collect text from all tokens in the subtree of the subject token
+                subject_phrase = "".join(t.text_with_ws for t in token.subtree).strip()
+                subjects.append(subject_phrase)
+        
+        if not subjects and sent_doc.root.pos_ == "VERB": # If no clear subject, check root verb's children
+            for child in sent_doc.root.children:
+                if child.dep_ in ("nsubj", "nsubjpass"):
+                    subject_phrase = "".join(t.text_with_ws for t in child.subtree).strip()
+                    subjects.append(subject_phrase)
+
+        return ", ".join(list(set(subjects))) if subjects else ""
+
+    def _extract_action(self, sent_doc: spacy.tokens.doc.Doc) -> str:
+        """
+        Extract the action phrase from an obligation sentence.
+        Focuses on the main verb and its direct objects or complements.
+        """
+        action_phrases = []
+        # Ensure sent_doc is a spaCy Span/Doc object
+        if not hasattr(sent_doc, 'ents'): # Basic check if it's a spaCy object
+            self.logger.warning(f"_extract_action received non-spaCy object: {type(sent_doc)}")
+            return ""
+
+        # Find the root verb of the sentence
+        root_verb = None
+        for token in sent_doc:
+            if token.dep_ == "ROOT" and token.pos_ == "VERB":
+                root_verb = token
+                break
+        
+        if not root_verb: # If no clear root verb, try to find main verb related to obligation
+            for token in sent_doc:
+                if token.lemma_ in self.obligation_keywords and token.head.pos_ == "VERB":
+                    root_verb = token.head
+                    break
+                elif token.pos_ == "VERB" and token.dep_ != "aux" and token.lemma_ not in ["be", "have"]:
+                    # Fallback to first non-auxiliary verb if no clear root/obligation verb
+                    if not root_verb:
+                         root_verb = token
+
+
+        if root_verb:
+            # Collect the verb and its objects/complements
+            action_tokens = [root_verb]
+            for child in root_verb.children:
+                if child.dep_ in ("dobj", "obj", "attr", "oprd", "acomp", "xcomp"):
+                    action_tokens.extend(list(child.subtree))
+                # Include particles for phrasal verbs
+                elif child.dep_ == "prt":
+                    action_tokens.append(child)
+            
+            # Sort tokens by their original index in the sentence to maintain order
+            action_tokens.sort(key=lambda t: t.i)
+            action_phrase = "".join(t.text_with_ws for t in action_tokens).strip()
+            # Further refinement: try to capture more of the verb phrase
+            # e.g., if root_verb is part of a larger verb phrase like "is required to submit"
+            # we want "submit" and its complements.
+            # The current logic might get "is" or "required".
+            # A more robust way is to find the main content verb.
+            
+            # Re-evaluate: find modal, then its head verb, then that verb's phrase.
+            modal_verb = None
+            main_content_verb = None
+
+            for token in sent_doc:
+                if token.lemma_ in self.obligation_keywords and token.pos_ == "AUX": # e.g. must, shall, should
+                    modal_verb = token
+                    if modal_verb.head.pos_ == "VERB":
+                        main_content_verb = modal_verb.head
+                        break
+            
+            if not main_content_verb: # If no modal, use the root verb if it's not an aux
+                 if root_verb and root_verb.pos_ != "AUX":
+                      main_content_verb = root_verb
+
+            if main_content_verb:
+                action_tokens = [main_content_verb]
+                q = list(main_content_verb.children)
+                visited_children = {main_content_verb}
+                while q:
+                    child = q.pop(0)
+                    if child in visited_children:
+                        continue
+                    visited_children.add(child)
+                    # Include direct objects, clausal complements, adjectival complements, particles
+                    if child.dep_ in ("dobj", "obj", "ccomp", "xcomp", "acomp", "prt", "oprd"):
+                        action_tokens.extend(list(child.subtree))
+                    # For prepositional objects, include the preposition and its object's subtree
+                    elif child.dep_ == "prep":
+                        action_tokens.append(child) # add the preposition
+                        action_tokens.extend(list(c for c_sub in child.children if c_sub.dep_ == "pobj" for c in c_sub.subtree))
+
+
+                action_tokens.sort(key=lambda t: t.i)
+                action_phrase = "".join(t.text_with_ws for t in action_tokens).strip()
+                action_phrases.append(action_phrase)
+
+        return "; ".join(list(set(action_phrases))) if action_phrases else ""
     
     def _classify_obligation_type(self, sent) -> str:
         """

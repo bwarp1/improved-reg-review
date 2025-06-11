@@ -1,0 +1,867 @@
+2025-06-11 01:32:24,225 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:32:24,225 - compliance-system - INFO - Initializing compliance system for environment: {'app': {'name': 'Regulatory Compliance Analysis Tool', 'env': 'development'}, 'api': {'base_url': 'https://api.regulations.gov/v4', 'rate_limit': 1000, 'user_agent': 'CompliancePoCAgent/1.0', 'use_demo_data': True, 'key': 'DEMO_KEY'}, 'paths': {'data_dir': 'compliance_poc/data/dev', 'policy_dir': 'sample_data/policies', 'regulations_dir': 'compliance_poc/data/regulations', 'output_dir': 'compliance_poc/data/dev/output', 'logs_dir': 'compliance_poc/logs/dev'}, 'nlp': {'model': 'en_core_web_sm', 'obligation_keywords': ['must', 'shall', 'required', 'requires', 'requirement', 'mandate', 'mandates', 'necessary', 'obligation', 'mandatory', 'should', 'needs to', 'obligated to']}, 'matching': {'threshold_fuzzy': 80, 'threshold_similarity': 0.6, 'approach': 'hybrid', 'adaptive_learning': True, 'confidence_threshold': 0.7}, 'output': {'format': 'console', 'detail_level': 'medium', 'output_dir': 'compliance_poc/reports'}, 'logging': {'level': 'DEBUG', 'file': 'compliance_poc/logs/dev/compliance.log', 'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s', 'console': True}, 'email': {'enabled': False, 'smtp_server': 'smtp.example.com', 'smtp_port': 587, 'use_tls': True, 'from_address': 'notifications@yourcompany.com'}, 'scheduler': {'enabled': False, 'check_time': '01:00', 'days_lookback': 1, 'tasks': [{'name': 'daily_compliance_check', 'schedule': '0 1 * * *', 'handler': 'compliance_poc.src.scheduler.daily_check'}]}}
+2025-06-11 01:32:24,225 - compliance-system - ERROR - Failed to initialize system: 'ConfigManager' object has no attribute 'load_environment'
+2025-06-11 01:32:24,225 - compliance-poc - ERROR - Application error: System initialization failed: 'ConfigManager' object has no attribute 'load_environment'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/utils/initialization.py", line 36, in initialize_system
+    config = config_manager.load_environment(environment)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ConfigManager' object has no attribute 'load_environment'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 303, in main
+    db_manager, optimizer = initialize_system(config)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/utils/initialization.py", line 63, in initialize_system
+    raise RuntimeError(f"System initialization failed: {str(e)}") from e
+RuntimeError: System initialization failed: 'ConfigManager' object has no attribute 'load_environment'
+2025-06-11 01:32:24,227 - compliance-poc - ERROR - Error during cleanup: cannot access local variable 'db_manager' where it is not associated with a value
+2025-06-11 01:41:10,297 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:41:10,297 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:41:10,297 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:41:10,297 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:41:10,342 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:41:10,342 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:41:10,342 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:41:10,343 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:41:10,343 - compliance-poc - INFO - Using base policy directory: company_policies
+2025-06-11 01:41:10,343 - compliance-poc - ERROR - Base policy directory 'company_policies' does not exist or is not a directory. Exiting.
+2025-06-11 01:41:10,343 - compliance-system - INFO - Closing database connections
+2025-06-11 01:41:10,343 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:42:38,732 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:42:38,732 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:42:38,733 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:42:38,733 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:42:38,744 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:42:38,745 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:42:38,745 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:42:38,745 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:42:38,745 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:42:38,745 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:42:38,745 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:42:38,745 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:42:38,746 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:42:38,746 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:42:38,747 - compliance_poc.src.nlp.domain_models - WARNING - Model en_core_web_sm not found. Downloading...
+2025-06-11 01:42:38,749 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): raw.githubusercontent.com:443
+2025-06-11 01:42:38,780 - urllib3.connectionpool - DEBUG - https://raw.githubusercontent.com:443 "GET /explosion/spacy-models/master/compatibility.json HTTP/1.1" 200 4351
+2025-06-11 01:42:40,817 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:42:40,819 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:42:40,820 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:42:40,821 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:42:40,926 - compliance-poc - ERROR - Error processing docket DOCKET_SECURITY_POLICY: ThresholdOptimizer.__init__() got an unexpected keyword argument 'config_path'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 381, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 193, in process_regulation
+    context = setup_processing_context(config_manager, logger)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 132, in setup_processing_context
+    comparer=ComplianceComparer(config["matching"]),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 4, in __init__
+  File "/workspaces/improved-reg-review/compliance_poc/src/matching/comparer.py", line 82, in __post_init__
+    self.threshold_optimizer = ThresholdOptimizer(config_path=threshold_config_path)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ThresholdOptimizer.__init__() got an unexpected keyword argument 'config_path'
+2025-06-11 01:42:40,926 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:42:40,927 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:42:40,927 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:42:41,584 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:42:41,619 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:42:41,621 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:42:41,622 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:42:41,623 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:42:41,623 - compliance-poc - ERROR - Error processing docket DOCKET_DATA_POLICY: ThresholdOptimizer.__init__() got an unexpected keyword argument 'config_path'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 381, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 193, in process_regulation
+    context = setup_processing_context(config_manager, logger)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 132, in setup_processing_context
+    comparer=ComplianceComparer(config["matching"]),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 4, in __init__
+  File "/workspaces/improved-reg-review/compliance_poc/src/matching/comparer.py", line 82, in __post_init__
+    self.threshold_optimizer = ThresholdOptimizer(config_path=threshold_config_path)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ThresholdOptimizer.__init__() got an unexpected keyword argument 'config_path'
+2025-06-11 01:42:41,624 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 0 dockets, Errors on 2 dockets.
+2025-06-11 01:42:41,624 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:42:41,624 - compliance-system - INFO - Closing database connections
+2025-06-11 01:42:41,624 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:44:10,340 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:44:10,340 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:44:10,340 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:44:10,340 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:44:10,352 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:44:10,352 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:44:10,352 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:44:10,352 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:44:10,352 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:44:10,352 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:44:10,353 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:44:10,353 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:44:10,353 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:44:10,353 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:44:11,164 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:44:11,198 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:44:11,200 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:44:11,202 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:44:11,202 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:44:11,241 - compliance-poc - ERROR - Error processing docket DOCKET_SECURITY_POLICY: 'reporting'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 381, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 193, in process_regulation
+    context = setup_processing_context(config_manager, logger)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 134, in setup_processing_context
+    if config["reporting"].get("format") != "none" else None)
+       ~~~~~~^^^^^^^^^^^^^
+KeyError: 'reporting'
+2025-06-11 01:44:11,242 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:44:11,243 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:44:11,243 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:44:11,762 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:44:11,797 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:44:11,798 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:44:11,800 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:44:11,800 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:44:11,800 - compliance-poc - ERROR - Error processing docket DOCKET_DATA_POLICY: 'reporting'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 381, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 193, in process_regulation
+    context = setup_processing_context(config_manager, logger)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 134, in setup_processing_context
+    if config["reporting"].get("format") != "none" else None)
+       ~~~~~~^^^^^^^^^^^^^
+KeyError: 'reporting'
+2025-06-11 01:44:11,801 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 0 dockets, Errors on 2 dockets.
+2025-06-11 01:44:11,801 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:44:11,801 - compliance-system - INFO - Closing database connections
+2025-06-11 01:44:11,802 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:44:49,324 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:44:49,324 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:44:49,324 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:44:49,324 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:44:49,337 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:44:49,337 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:44:49,337 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:44:49,337 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:44:49,338 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:44:49,338 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:44:49,338 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:44:49,338 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:44:49,339 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:44:49,339 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:44:50,061 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:44:50,094 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:44:50,095 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:44:50,097 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:44:50,097 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:44:50,133 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:44:50,133 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:44:50,133 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:44:50,133 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:44:50,133 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:44:50,133 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:44:50,134 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:44:50,134 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:44:50,167 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:44:50,167 - compliance-poc - ERROR - Error processing regulation: 'ObligationExtractor' object has no attribute '_extract_subject'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 597, in _analyze_obligation
+    result["subject"] = self._extract_subject(sent)
+                        ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_subject'
+2025-06-11 01:44:50,171 - compliance-poc - ERROR - Error processing docket DOCKET_SECURITY_POLICY: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_subject'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 597, in _analyze_obligation
+    result["subject"] = self._extract_subject(sent)
+                        ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_subject'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 382, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 262, in process_regulation
+    raise RuntimeError(f"Failed to process regulation: {str(e)}")
+RuntimeError: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_subject'
+2025-06-11 01:44:50,176 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:44:50,177 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:44:50,177 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:44:50,708 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:44:50,740 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:44:50,742 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:44:50,743 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:44:50,743 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:44:50,744 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 01:44:50,744 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 01:44:50,744 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 01:44:50,744 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:44:50,744 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:44:50,744 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:44:50,744 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:44:50,744 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:44:50,766 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:44:50,766 - compliance-poc - ERROR - Error processing regulation: 'ObligationExtractor' object has no attribute '_extract_subject'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 597, in _analyze_obligation
+    result["subject"] = self._extract_subject(sent)
+                        ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_subject'
+2025-06-11 01:44:50,770 - compliance-poc - ERROR - Error processing docket DOCKET_DATA_POLICY: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_subject'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 597, in _analyze_obligation
+    result["subject"] = self._extract_subject(sent)
+                        ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_subject'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 382, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 262, in process_regulation
+    raise RuntimeError(f"Failed to process regulation: {str(e)}")
+RuntimeError: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_subject'
+2025-06-11 01:44:50,777 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 0 dockets, Errors on 2 dockets.
+2025-06-11 01:44:50,777 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:44:50,777 - compliance-system - INFO - Closing database connections
+2025-06-11 01:44:50,777 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:49:38,453 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:49:38,453 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:49:38,454 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:49:38,454 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:49:38,464 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:49:38,464 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:49:38,464 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:49:38,464 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:49:38,465 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:49:38,465 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:49:38,465 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:49:38,465 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:49:38,465 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:49:38,466 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:49:39,261 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:49:39,309 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:49:39,311 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:49:39,312 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:49:39,312 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:49:39,350 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:49:39,351 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:49:39,351 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:49:39,351 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:49:39,351 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:49:39,351 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:49:39,351 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:49:39,351 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:49:39,384 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:49:39,385 - compliance-poc - ERROR - Error processing regulation: 'ObligationExtractor' object has no attribute '_extract_action'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 600, in _analyze_obligation
+    result["action"] = self._extract_action(sent)
+                       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_action'
+2025-06-11 01:49:39,388 - compliance-poc - ERROR - Error processing docket DOCKET_SECURITY_POLICY: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_action'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 600, in _analyze_obligation
+    result["action"] = self._extract_action(sent)
+                       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_action'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 382, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 262, in process_regulation
+    raise RuntimeError(f"Failed to process regulation: {str(e)}")
+RuntimeError: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_action'
+2025-06-11 01:49:39,392 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:49:39,392 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:49:39,392 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:49:39,979 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:49:40,017 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:49:40,019 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:49:40,021 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:49:40,021 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:49:40,021 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 01:49:40,021 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 01:49:40,022 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 01:49:40,022 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:49:40,022 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:49:40,022 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:49:40,022 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:49:40,022 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:49:40,053 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:49:40,054 - compliance-poc - ERROR - Error processing regulation: 'ObligationExtractor' object has no attribute '_extract_action'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 600, in _analyze_obligation
+    result["action"] = self._extract_action(sent)
+                       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_action'
+2025-06-11 01:49:40,060 - compliance-poc - ERROR - Error processing docket DOCKET_DATA_POLICY: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_action'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 210, in process_regulation
+    obligations = context.extractor.extract_obligations(regulation_text)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 256, in extract_obligations
+    obligation_elements = self._analyze_obligation(sent, surrounding_context, document_domains)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/nlp/extractor.py", line 600, in _analyze_obligation
+    result["action"] = self._extract_action(sent)
+                       ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ObligationExtractor' object has no attribute '_extract_action'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 382, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 262, in process_regulation
+    raise RuntimeError(f"Failed to process regulation: {str(e)}")
+RuntimeError: Failed to process regulation: 'ObligationExtractor' object has no attribute '_extract_action'
+2025-06-11 01:49:40,066 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 0 dockets, Errors on 2 dockets.
+2025-06-11 01:49:40,066 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:49:40,066 - compliance-system - INFO - Closing database connections
+2025-06-11 01:49:40,067 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:50:53,991 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:50:53,991 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:50:53,991 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:50:53,992 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:50:54,003 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:50:54,003 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:50:54,003 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:50:54,003 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:50:54,003 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:50:54,003 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:50:54,003 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:50:54,003 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:50:54,004 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:50:54,004 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:50:54,806 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:50:54,857 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:50:54,860 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:50:54,862 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:50:54,863 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:50:54,921 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:50:54,921 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:50:54,922 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:50:54,922 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:50:54,922 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:50:54,923 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:50:54,923 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:50:54,923 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:50:54,961 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:50:55,019 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:50:55,019 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:50:55,020 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:50:55,020 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:50:55,021 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_SECURITY_POLICY/data_security_policy.txt
+2025-06-11 01:50:55,024 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:50:55,024 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:50:55,025 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:50:55,025 - compliance-poc - ERROR - Error processing regulation: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 222, in process_regulation
+    matches = optimizer.optimize_and_compare(obligations, policies)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+2025-06-11 01:50:55,028 - compliance-poc - ERROR - Error processing docket DOCKET_SECURITY_POLICY: Failed to process regulation: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 222, in process_regulation
+    matches = optimizer.optimize_and_compare(obligations, policies)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 382, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 262, in process_regulation
+    raise RuntimeError(f"Failed to process regulation: {str(e)}")
+RuntimeError: Failed to process regulation: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+2025-06-11 01:50:55,031 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:50:55,032 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:50:55,032 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:50:55,559 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:50:55,594 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:50:55,596 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:50:55,597 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:50:55,597 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:50:55,598 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 01:50:55,598 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 01:50:55,598 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 01:50:55,598 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:50:55,598 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:50:55,598 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:50:55,598 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:50:55,598 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:50:55,625 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:50:55,696 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:50:55,697 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:50:55,698 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:50:55,698 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:50:55,698 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_DATA_POLICY/data_policy.txt
+2025-06-11 01:50:55,701 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:50:55,701 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:50:55,701 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:50:55,701 - compliance-poc - ERROR - Error processing regulation: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 222, in process_regulation
+    matches = optimizer.optimize_and_compare(obligations, policies)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+2025-06-11 01:50:55,704 - compliance-poc - ERROR - Error processing docket DOCKET_DATA_POLICY: Failed to process regulation: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 222, in process_regulation
+    matches = optimizer.optimize_and_compare(obligations, policies)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 382, in main
+    results = process_regulation(
+              ^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/improved-reg-review/compliance_poc/src/main.py", line 262, in process_regulation
+    raise RuntimeError(f"Failed to process regulation: {str(e)}")
+RuntimeError: Failed to process regulation: 'ThresholdOptimizer' object has no attribute 'optimize_and_compare'
+2025-06-11 01:50:55,707 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 0 dockets, Errors on 2 dockets.
+2025-06-11 01:50:55,707 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:50:55,708 - compliance-system - INFO - Closing database connections
+2025-06-11 01:50:55,708 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:53:55,610 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:53:55,610 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:53:55,611 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:53:55,611 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:53:55,622 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:53:55,622 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:53:55,622 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:53:55,622 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:53:55,623 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:53:55,623 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:53:55,623 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:53:55,623 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:53:55,623 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:53:55,624 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:53:56,409 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:53:56,484 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:53:56,486 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:53:56,489 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:53:56,489 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:53:56,586 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:53:56,586 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:53:56,586 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:53:56,586 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:53:56,586 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:53:56,586 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:53:56,586 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:53:56,587 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:53:56,666 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:53:56,752 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:53:56,752 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:53:56,752 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:53:56,752 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:53:56,753 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_SECURITY_POLICY/data_security_policy.txt
+2025-06-11 01:53:56,753 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:53:56,753 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:53:56,753 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:53:56,753 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:53:56,753 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:53:56,753 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:53:56,766 - compliance_poc.src.matching.comparer - ERROR - Error creating policy vectors: 'ComplianceComparer' object has no attribute 'enable_performance_tracking'
+2025-06-11 01:53:56,766 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:53:56,766 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:53:56,767 - compliance-poc - INFO - Marked docket DOCKET_SECURITY_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:53:56,767 - compliance-poc - INFO - Successfully processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:53:56,767 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:53:56,768 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:53:56,768 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:53:57,275 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:53:57,308 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:53:57,309 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:53:57,311 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:53:57,312 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:53:57,312 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 01:53:57,312 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 01:53:57,312 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 01:53:57,312 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:53:57,313 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:53:57,313 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:53:57,313 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:53:57,313 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:53:57,339 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:53:57,394 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:53:57,394 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:53:57,395 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:53:57,395 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:53:57,395 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_DATA_POLICY/data_policy.txt
+2025-06-11 01:53:57,395 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:53:57,395 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:53:57,395 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:53:57,396 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:53:57,396 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:53:57,396 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:53:57,401 - compliance_poc.src.matching.comparer - ERROR - Error creating policy vectors: 'ComplianceComparer' object has no attribute 'enable_performance_tracking'
+2025-06-11 01:53:57,401 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:53:57,402 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:53:57,402 - compliance-poc - INFO - Marked docket DOCKET_DATA_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:53:57,402 - compliance-poc - INFO - Successfully processed docket: DOCKET_DATA_POLICY
+2025-06-11 01:53:57,402 - compliance-poc - INFO - Automatic processing summary: Processed 2 dockets, Skipped 0 dockets, Errors on 0 dockets.
+2025-06-11 01:53:57,402 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:53:57,403 - compliance-system - INFO - Closing database connections
+2025-06-11 01:53:57,403 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:55:01,616 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:55:01,617 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:55:01,617 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:55:01,617 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:55:01,628 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:55:01,628 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:55:01,629 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:55:01,629 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:55:01,629 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:55:01,629 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:55:01,629 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:55:01,629 - compliance-poc - INFO - Skipping already processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:55:01,629 - compliance-poc - INFO - Skipping already processed docket: DOCKET_DATA_POLICY
+2025-06-11 01:55:01,630 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 2 dockets, Errors on 0 dockets.
+2025-06-11 01:55:01,630 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:55:01,630 - compliance-system - INFO - Closing database connections
+2025-06-11 01:55:01,630 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:55:45,721 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:55:45,721 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:55:45,721 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:55:45,721 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:55:45,732 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:55:45,732 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:55:45,732 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:55:45,732 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:55:45,732 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:55:45,732 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:55:45,732 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:55:45,732 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:55:45,733 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:55:45,733 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:55:46,498 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:55:46,549 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:55:46,551 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:55:46,553 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:55:46,554 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:55:46,609 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:55:46,609 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:55:46,610 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:55:46,610 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:55:46,610 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:55:46,611 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:55:46,611 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:55:46,611 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:55:46,654 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:55:46,754 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:55:46,756 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:55:46,756 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:55:46,757 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:55:46,757 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_SECURITY_POLICY/data_security_policy.txt
+2025-06-11 01:55:46,758 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:55:46,759 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:55:46,760 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:55:46,760 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:55:46,760 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:55:46,761 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:55:46,772 - compliance_poc.src.matching.comparer - DEBUG - Processing obligation group 1/1
+2025-06-11 01:55:46,827 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:55:46,830 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:55:46,831 - compliance-poc - INFO - Marked docket DOCKET_SECURITY_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:55:46,831 - compliance-poc - INFO - Successfully processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:55:46,832 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:55:46,832 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:55:46,833 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:55:47,395 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:55:47,429 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:55:47,431 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:55:47,433 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:55:47,433 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:55:47,434 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 01:55:47,434 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 01:55:47,434 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 01:55:47,434 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:55:47,434 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:55:47,434 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:55:47,434 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:55:47,434 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:55:47,457 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:55:47,510 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:55:47,510 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:55:47,510 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:55:47,510 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:55:47,510 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_DATA_POLICY/data_policy.txt
+2025-06-11 01:55:47,511 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:55:47,511 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:55:47,511 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:55:47,511 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:55:47,512 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:55:47,512 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:55:47,515 - compliance_poc.src.matching.comparer - DEBUG - Processing obligation group 1/1
+2025-06-11 01:55:47,534 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:55:47,534 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:55:47,535 - compliance-poc - INFO - Marked docket DOCKET_DATA_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:55:47,535 - compliance-poc - INFO - Successfully processed docket: DOCKET_DATA_POLICY
+2025-06-11 01:55:47,535 - compliance-poc - INFO - Automatic processing summary: Processed 2 dockets, Skipped 0 dockets, Errors on 0 dockets.
+2025-06-11 01:55:47,535 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:55:47,535 - compliance-system - INFO - Closing database connections
+2025-06-11 01:55:47,536 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:56:58,329 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:56:58,330 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:56:58,330 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:56:58,330 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:56:58,340 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:56:58,341 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:56:58,341 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:56:58,341 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:56:58,341 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:56:58,341 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 01:56:58,341 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 01:56:58,341 - compliance-poc - INFO - Force reprocessing enabled. All detected dockets will be processed regardless of prior status.
+2025-06-11 01:56:58,342 - compliance-poc - INFO - Processing docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:56:58,342 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:56:58,342 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:56:59,139 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:56:59,189 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:56:59,192 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:56:59,194 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:56:59,194 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:56:59,251 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:56:59,251 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:56:59,251 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:56:59,251 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:56:59,251 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:56:59,251 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:56:59,251 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:56:59,251 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:56:59,280 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:56:59,336 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:56:59,337 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:56:59,337 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:56:59,337 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:56:59,337 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_SECURITY_POLICY/data_security_policy.txt
+2025-06-11 01:56:59,337 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:56:59,338 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:56:59,338 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:56:59,338 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:56:59,338 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:56:59,338 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:56:59,343 - compliance_poc.src.matching.comparer - DEBUG - Processing obligation group 1/1
+2025-06-11 01:56:59,375 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:56:59,376 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:56:59,376 - compliance-poc - INFO - Marked docket DOCKET_SECURITY_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:56:59,376 - compliance-poc - INFO - Successfully processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:56:59,376 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 01:56:59,377 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:56:59,377 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:57:00,025 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:57:00,059 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:57:00,061 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:57:00,062 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:57:00,063 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:57:00,063 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 01:57:00,063 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 01:57:00,063 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 01:57:00,063 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:57:00,063 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:57:00,064 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:57:00,064 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:57:00,064 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:57:00,088 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:57:00,142 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:57:00,142 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:57:00,142 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:57:00,142 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 01:57:00,142 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_DATA_POLICY/data_policy.txt
+2025-06-11 01:57:00,143 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:57:00,143 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:57:00,143 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:57:00,143 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:57:00,143 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:57:00,143 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:57:00,146 - compliance_poc.src.matching.comparer - DEBUG - Processing obligation group 1/1
+2025-06-11 01:57:00,164 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:57:00,164 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:57:00,165 - compliance-poc - INFO - Marked docket DOCKET_DATA_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:57:00,165 - compliance-poc - INFO - Successfully processed docket: DOCKET_DATA_POLICY
+2025-06-11 01:57:00,165 - compliance-poc - INFO - Automatic processing summary: Processed 2 dockets, Skipped 0 dockets, Errors on 0 dockets.
+2025-06-11 01:57:00,165 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:57:00,165 - compliance-system - INFO - Closing database connections
+2025-06-11 01:57:00,166 - compliance-system - INFO - System cleanup completed
+2025-06-11 01:58:28,719 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 01:58:28,720 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 01:58:28,720 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 01:58:28,720 - compliance-system - INFO - Initializing database connection...
+2025-06-11 01:58:28,730 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 01:58:28,730 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 01:58:28,730 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 01:58:28,731 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 01:58:28,731 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 01:58:28,731 - compliance-poc - INFO - Manual mode: Processing specified docket 'DOCKET_SECURITY_POLICY'
+2025-06-11 01:58:28,731 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 01:58:28,731 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 01:58:29,360 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 01:58:29,412 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 01:58:29,414 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 01:58:29,416 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 01:58:29,417 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:58:29,473 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_SECURITY_POLICY, Document ID=None
+2025-06-11 01:58:29,473 - compliance-poc - INFO - Searching for documents in docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:58:29,473 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_SECURITY_POLICY
+2025-06-11 01:58:29,474 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 01:58:29,474 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 01:58:29,475 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 01:58:29,475 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 01:58:29,475 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 01:58:29,519 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 01:58:29,586 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 01:58:29,586 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 01:58:29,586 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:58:29,587 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_SECURITY_POLICY
+2025-06-11 01:58:29,587 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_SECURITY_POLICY/data_security_policy.txt
+2025-06-11 01:58:29,587 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 01:58:29,587 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 01:58:29,587 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 01:58:29,587 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 01:58:29,588 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 01:58:29,588 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 01:58:29,593 - compliance_poc.src.matching.comparer - DEBUG - Processing obligation group 1/1
+2025-06-11 01:58:29,625 - compliance-poc - INFO - Generating compliance report
+2025-06-11 01:58:29,626 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 01:58:29,627 - compliance-poc - INFO - Marked docket DOCKET_SECURITY_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 01:58:29,627 - compliance-poc - INFO - Successfully processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 01:58:29,627 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 01:58:29,627 - compliance-system - INFO - Closing database connections
+2025-06-11 01:58:29,628 - compliance-system - INFO - System cleanup completed
+2025-06-11 02:00:50,402 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 02:00:50,402 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 02:00:50,403 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 02:00:50,403 - compliance-system - INFO - Initializing database connection...
+2025-06-11 02:00:50,414 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 02:00:50,414 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 02:00:50,414 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 02:00:50,414 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 02:00:50,414 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 02:00:50,414 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 02:00:50,415 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 02:00:50,415 - compliance-poc - INFO - Skipping already processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 02:00:50,415 - compliance-poc - INFO - Processing docket: DOCKET_DATA_POLICY
+2025-06-11 02:00:50,415 - compliance-poc - INFO - No API key found or demo mode configured. Using sample data.
+2025-06-11 02:00:50,416 - compliance_poc.src.api.regulations_api - INFO - RegulationsAPI initialized, use_demo_data=True, API key=provided
+2025-06-11 02:00:51,243 - compliance_poc.src.nlp.domain_models - INFO - Loaded base NLP model: en_core_web_sm
+2025-06-11 02:00:51,294 - compliance_poc.src.nlp.domain_models - INFO - Added entity ruler with domain-specific entities
+2025-06-11 02:00:51,297 - compliance_poc.src.nlp.domain_models - INFO - Added regulatory language detector
+2025-06-11 02:00:51,299 - compliance_poc.src.nlp.domain_models - INFO - Added context-aware obligation analyzer
+2025-06-11 02:00:51,300 - compliance_poc.src.nlp.extractor - INFO - Initialized domain-specific processor for domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 02:00:51,355 - compliance-poc - INFO - Processing regulation: Docket ID=DOCKET_DATA_POLICY, Document ID=None
+2025-06-11 02:00:51,355 - compliance-poc - INFO - Searching for documents in docket: DOCKET_DATA_POLICY
+2025-06-11 02:00:51,355 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample documents for docket DOCKET_DATA_POLICY
+2025-06-11 02:00:51,356 - compliance-poc - INFO - Using document: DEMO-DOC-2023-0001
+2025-06-11 02:00:51,356 - compliance_poc.src.api.regulations_api - INFO - Demo mode: Returning sample content for document DEMO-DOC-2023-0001
+2025-06-11 02:00:51,357 - compliance_poc.src.api.regulations_api - ERROR - Error caching document DEMO-DOC-2023-0001: 'RegulationsAPI' object has no attribute 'cache_dir'
+2025-06-11 02:00:51,357 - compliance-poc - INFO - Extracting obligations from regulation text
+2025-06-11 02:00:51,357 - compliance_poc.src.nlp.extractor - INFO - Extracting obligations from text (213 chars)
+2025-06-11 02:00:51,401 - compliance_poc.src.nlp.extractor - INFO - Detected document domains: ['financial', 'healthcare', 'data_privacy', 'environmental']
+2025-06-11 02:00:51,481 - compliance_poc.src.nlp.extractor - INFO - Found 3 obligations
+2025-06-11 02:00:51,481 - compliance-poc - INFO - Found 3 obligations
+2025-06-11 02:00:51,481 - compliance-poc - INFO - Loading policies from directory: sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 02:00:51,481 - compliance_poc.src.policy.loader - INFO - Loading policies from sample_data/policies/DOCKET_DATA_POLICY
+2025-06-11 02:00:51,481 - compliance_poc.src.policy.loader - DEBUG - Loading policy: sample_data/policies/DOCKET_DATA_POLICY/data_policy.txt
+2025-06-11 02:00:51,482 - compliance_poc.src.policy.loader - INFO - Loaded 1 policy documents
+2025-06-11 02:00:51,482 - compliance-poc - INFO - Loaded 1 policy documents
+2025-06-11 02:00:51,482 - compliance-poc - INFO - Comparing obligations against policies
+2025-06-11 02:00:51,482 - compliance-poc - INFO - Optimizing thresholds using the main optimizer instance.
+2025-06-11 02:00:51,482 - compliance-poc - INFO - Updating comparer thresholds with: {'base': 0.6, 'financial': 0.7, 'healthcare': 0.65, 'data_privacy': 0.65, 'environmental': 0.65, 'general': 0.55}
+2025-06-11 02:00:51,482 - compliance_poc.src.matching.comparer - INFO - Starting compliance comparison of 3 obligations against 1 policies
+2025-06-11 02:00:51,487 - compliance_poc.src.matching.comparer - DEBUG - Processing obligation group 1/1
+2025-06-11 02:00:51,517 - compliance-poc - INFO - Generating compliance report
+2025-06-11 02:00:51,517 - compliance_poc.src.reporting.report_generator - INFO - Console report generated
+2025-06-11 02:00:51,517 - compliance-poc - INFO - Marked docket DOCKET_DATA_POLICY as processed. Tracking file: cache/processed_dockets.txt
+2025-06-11 02:00:51,518 - compliance-poc - INFO - Successfully processed docket: DOCKET_DATA_POLICY
+2025-06-11 02:00:51,518 - compliance-poc - INFO - Automatic processing summary: Processed 1 dockets, Skipped 1 dockets, Errors on 0 dockets.
+2025-06-11 02:00:51,518 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 02:00:51,518 - compliance-system - INFO - Closing database connections
+2025-06-11 02:00:51,518 - compliance-system - INFO - System cleanup completed
+2025-06-11 02:02:17,835 - compliance-poc - INFO - Starting regulatory compliance analysis in development environment
+2025-06-11 02:02:17,835 - compliance-system - INFO - Root logger level set to: DEBUG by initialize_system.
+2025-06-11 02:02:17,835 - compliance-system - INFO - Initializing system components using ConfigManager for env: development
+2025-06-11 02:02:17,835 - compliance-system - INFO - Initializing database connection...
+2025-06-11 02:02:17,847 - compliance-system - INFO - DatabaseManager initialized.
+2025-06-11 02:02:17,847 - compliance-system - INFO - Initializing threshold optimizer...
+2025-06-11 02:02:17,847 - compliance-system - INFO - ThresholdOptimizer initialized.
+2025-06-11 02:02:17,848 - compliance-system - INFO - System components initialization completed successfully.
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Using base policy directory: sample_data/policies
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Automatic mode: Scanning 'sample_data/policies' for dockets.
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Found dockets: DOCKET_SECURITY_POLICY, DOCKET_DATA_POLICY
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Skipping already processed docket: DOCKET_SECURITY_POLICY
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Skipping already processed docket: DOCKET_DATA_POLICY
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Automatic processing summary: Processed 0 dockets, Skipped 2 dockets, Errors on 0 dockets.
+2025-06-11 02:02:17,848 - compliance-poc - INFO - Compliance analysis run completed.
+2025-06-11 02:02:17,849 - compliance-system - INFO - Closing database connections
+2025-06-11 02:02:17,849 - compliance-system - INFO - System cleanup completed

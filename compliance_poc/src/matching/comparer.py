@@ -78,9 +78,18 @@ class ComplianceComparer:
         self.logger = logging.getLogger(__name__)
         
         # Initialize threshold optimizer
-        threshold_config_path = self.config.get("threshold_config_path")
-        self.threshold_optimizer = ThresholdOptimizer(config_path=threshold_config_path)
-        self.thresholds = self.threshold_optimizer.thresholds
+        # self.config here is the 'matching' section of the main config.
+        # ThresholdOptimizer expects the full config to find an 'optimization' key,
+        # or it will use defaults. It also accepts an optional db_manager.
+        # ComplianceComparer doesn't have access to the full config or db_manager here.
+        # Passing self.config and db_manager=None to satisfy __init__ signature.
+        # This may lead to ThresholdOptimizer using default settings if 'optimization'
+        # key is not found within self.config (i.e., main_config['matching']['optimization']).
+        self.threshold_optimizer = ThresholdOptimizer(config=self.config, db_manager=None)
+        # Get thresholds from the newly initialized optimizer.
+        # ThresholdOptimizer.thresholds is a dict like: {"base": {"value": 0.60, "confidence": ...}}
+        # We need just the values for ComplianceComparer's direct use.
+        self.thresholds = {domain: data["value"] for domain, data in self.threshold_optimizer.thresholds.items()}
         
         # Setup context weights with validation
         weights = {
@@ -112,6 +121,22 @@ class ComplianceComparer:
             maxsize=self.config.get("cache_size", 1000)
         )
         self.context_memory = OrderedDict()
+
+        # Initialize attributes for performance tracking, calibration, and adaptive learning
+        self.enable_performance_tracking = self.config.get("enable_performance_tracking", False) # Default to False
+        self.performance_stats = {
+            "vectorization_time": 0.0,
+            "similarity_calculation_time": 0.0,
+            "total_comparisons": 0,
+            "cache_hits": 0
+        }
+        self.auto_calibrate = self.config.get("auto_calibrate_thresholds", False) # Default to False
+        self.calibration_data: List[Dict[str, Any]] = []
+        
+        self.adaptive_learning = self.config.get("adaptive_learning", False) # From base.yaml, this is true
+        self.reviewed_matches: List[Dict[str, Any]] = []
+        self.learning_rate = self.config.get("learning_rate", 0.01) # Default learning rate
+        self.min_weight = self.config.get("min_context_weight", 0.05) # Default min weight for context factors
 
     def compare(self, obligations: List[Dict], policies: Dict[str, str]) -> List[Dict]:
         """Compare obligations against policies with enhanced context awareness."""
